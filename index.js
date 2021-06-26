@@ -1,24 +1,52 @@
-const nums = document.querySelectorAll('.numbers')
-const operators = document.querySelectorAll('.operators')
-const equals = document.querySelector('.equals')
-const clear = document.querySelector('.clear')
+// DOM objects
 let display = document.querySelector('.displayNum')
 const calcContainer = document.querySelector('.calcContainer')
 
+// Container data structures
+let firstNumber = []
+let secondNumber = []
+let operatorArr = ['+', '-', '*', '/']
+let storeOperator = []
+let result = []
 
-let number = []
+// Calculator Functionality Logic
 calcContainer.addEventListener('click', (e) => {
-    let operator
     if (e.target.dataset.typeof === "number") {
-        number.push(parseInt(e.target.innerHTML))
-        display.innerHTML = number.join('')
+        firstNumber.push(parseInt(e.target.innerHTML))
+        display.innerHTML = firstNumber.join('')
     }
     if (e.target.dataset.typeof === "decimal") {
-        number.push('.')
-        display.innerHTML = number.join('')
+        if (firstNumber.includes('.')) {
+            return
+        } else {
+            firstNumber.push('.')
+            display.innerHTML = firstNumber.join('')
+        }
     }
     if (e.target.dataset.typeof === "operator") {
-        let operator = e.target.innerHTML
+        storeOperator.push(e.target.innerHTML)
+        console.log(storeOperator)
+    }
+
+    if (e.target.dataset.typeof === "equal") {
+        if (storeOperator[storeOperator.length - 1] === operatorArr[0]) {
+            result.push(firstNumber + secondNumber)
+        }
+        if (storeOperator[storeOperator.length - 1] === operatorArr[1]) {
+            result.push(firstNumber - secondNumber)
+        }
+        if (storeOperator[storeOperator.length - 1] === operatorArr[2]) {
+            result.push(firstNumber * secondNumber)
+        }
+        if (storeOperator[storeOperator.length - 1] === operatorArr[3]) {
+            result.push(firstNumber / secondNumber)
+        }
+        firstNumber = result
+    }
+
+    if (e.target.dataset.typeof === "clear") {
+        firstNumber = []
+        display.innerHTML = 0
     }
 })
 

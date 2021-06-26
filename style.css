@@ -27,11 +27,7 @@
 .display{
     grid-area: display;
     display: flex;
-    justify-content: space-between;
-}
-
-.displayNone{
-    visibility: hidden;
+    justify-content: flex-end;
 }
 
 .displayNum{
@@ -121,7 +117,6 @@
 .black{
     background-color: black;
     color: white;
-    border: 1px solid black;
     display: flex;
     align-items: flex-end;
 }
