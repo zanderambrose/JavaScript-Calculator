@@ -11,10 +11,18 @@ let result = []
 
 // Calculator Functionality Logic
 calcContainer.addEventListener('click', (e) => {
+    // FOR NUMBER TYPES
     if (e.target.dataset.typeof === "number") {
-        firstNumber.push(parseInt(e.target.innerHTML))
-        display.innerHTML = firstNumber.join('')
+        if (storeOperator.length < 1) {
+            firstNumber.push(parseInt(e.target.innerHTML))
+            display.innerHTML = firstNumber.join('')
+        } else {
+            secondNumber.push(parseInt(e.target.innerHTML))
+            display.innerHTML = secondNumber.join('')
+
+        }
     }
+    // FOR DECIMAL
     if (e.target.dataset.typeof === "decimal") {
         if (firstNumber.includes('.')) {
             return
@@ -23,36 +31,44 @@ calcContainer.addEventListener('click', (e) => {
             display.innerHTML = firstNumber.join('')
         }
     }
+    // FOR OPERATOR TYPES
     if (e.target.dataset.typeof === "operator") {
         storeOperator.push(e.target.innerHTML)
-        console.log(storeOperator)
     }
-
+    // FOR EQUALS 
     if (e.target.dataset.typeof === "equal") {
-        if (storeOperator[storeOperator.length - 1] === operatorArr[0]) {
-            result.push(firstNumber + secondNumber)
+        result = []
+        console.log(firstNumber)
+        if (firstNumber.length > 1) {
+            if (storeOperator[storeOperator.length - 1] === operatorArr[0]) {
+                result.push(parseInt(firstNumber.join('')) + parseInt(secondNumber.join('')))
+            } else if (storeOperator[storeOperator.length - 1] === operatorArr[1]) {
+                result.push(parseInt(firstNumber.join('')) - parseInt(secondNumber.join('')))
+            } else if (storeOperator[storeOperator.length - 1] === operatorArr[2]) {
+                result.push(parseInt(firstNumber.join('')) * parseInt(secondNumber.join('')))
+            } else if (storeOperator[storeOperator.length - 1] === operatorArr[3]) {
+                result.push(parseInt(firstNumber.join('')) / parseInt(secondNumber.join('')))
+            }
+        } else {
+            if (storeOperator[storeOperator.length - 1] === operatorArr[0]) {
+                result.push(parseInt(firstNumber) + parseInt(secondNumber.join('')))
+            } else if (storeOperator[storeOperator.length - 1] === operatorArr[1]) {
+                result.push(parseInt(firstNumber) - parseInt(secondNumber.join('')))
+            } else if (storeOperator[storeOperator.length - 1] === operatorArr[2]) {
+                result.push(parseInt(firstNumber) * parseInt(secondNumber.join('')))
+            } else if (storeOperator[storeOperator.length - 1] === operatorArr[3]) {
+                result.push(parseInt(firstNumber) / parseInt(secondNumber.join('')))
+            }
         }
-        if (storeOperator[storeOperator.length - 1] === operatorArr[1]) {
-            result.push(firstNumber - secondNumber)
-        }
-        if (storeOperator[storeOperator.length - 1] === operatorArr[2]) {
-            result.push(firstNumber * secondNumber)
-        }
-        if (storeOperator[storeOperator.length - 1] === operatorArr[3]) {
-            result.push(firstNumber / secondNumber)
-        }
-        firstNumber = result
-    }
 
+        display.innerHTML = result;
+        firstNumber = result
+        storeOperator = []
+        secondNumber = []
+    }
+    // FOR CLEAR BUTTON
     if (e.target.dataset.typeof === "clear") {
         firstNumber = []
         display.innerHTML = 0
     }
 })
-
-
-
-// Update display number and keep it in sync with the computational number
-// When an operator is clicked, take the current computational number/display number and use that operator with the next set of computational numbers
-// Once the equals button is clicked, complete the computation and return the result and save value in computational number
-// Clear display and numerator whenever the CLEAR button is clicked
