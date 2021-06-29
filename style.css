@@ -23,7 +23,7 @@ body{
     grid-template-areas: 
     "display display display display"
     "plus minus mult divide"
-    "seven eight nine equals"
+    "seven eight nine negative"
     "four five six equals"
     "one two three equals"
     "zero point clear equals";
@@ -117,6 +117,10 @@ body{
     grid-area: equals;
 }
 
+.negative{
+    grid-area: negative;
+}
+
 
 /* Grouped classes */
 .grey{
@@ -150,4 +154,16 @@ body{
 
 .bckgOpac:active{
     transform: scale(1.025);
+}
+
+@media (max-width: 700px){
+    .calcContainer{
+        width: 90%;
+    }
+}
+
+@media (max-height: 650px){
+    .calcContainer{
+    grid-template-rows: repeat(6, 85px);
+    }
 }
