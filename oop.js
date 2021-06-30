@@ -14,6 +14,7 @@ class Calculator {
     constructor(currentDisplay, previousDisplay) {
         this.currentDisplay = currentDisplay
         this.previousDisplay = previousDisplay
+        this.canClearWithNewNumber = false
         this.clear()
     }
 
@@ -76,6 +77,7 @@ class Calculator {
                 this.clearPrevDisplay()
             }
         }
+        this.canClearWithNewNumber = true
     }
 
     clearPrevDisplay() {
@@ -93,6 +95,10 @@ const calc = new Calculator(currentDisplay, previousDisplay)
 // Add event listeners for the NUMBER BUTTONS
 numberButtons.forEach(button => {
     button.addEventListener('click', () => {
+        if (calc.canClearWithNewNumber) {
+            calc.currentComputationValue = ''
+            calc.canClearWithNewNumber = false
+        }
         calc.updateValue(button.textContent)
         calc.updateDisplay()
     })
@@ -109,6 +115,10 @@ negativeButton.addEventListener('click', () => {
 // Add event listener for DECIMAL BUTTON
 decimal.addEventListener('click', () => {
     if (currentDisplay.textContent.includes('.')) return
+    if (calc.canClearWithNewNumber) {
+        calc.currentComputationValue = ''
+        calc.canClearWithNewNumber = false
+    }
     calc.updateValue(decimal.textContent)
     calc.updateDisplay()
 })
@@ -131,4 +141,4 @@ equalButton.addEventListener('click', () => {
     calc.calculate()
 })
 
-// fix appending a number on number button click after calculation 
+// fix appending a number or decimal on number/decimal button click after calculation 
