@@ -22,6 +22,7 @@ class Calculator {
         this.currentComputationValue = ''
         this.previousComputationValue = ''
         this.updateDisplay()
+        this.clearPrevDisplay()
     }
 
     updateValue(number) {
@@ -46,23 +47,43 @@ class Calculator {
 
     calculate() {
         let currentComputationValuePlaceholder = this.currentComputationValue
+        if (!this.previousComputationValue) {
+            this.previousComputationValue = '0'
+        }
         if (this.currentOperatorValue == '+') {
             this.currentComputationValue = ''
             this.updateValue((parseFloat(this.previousComputationValue) + parseFloat(currentComputationValuePlaceholder)).toString())
             this.updateDisplay()
+            this.clearPrevDisplay()
         } else if (this.currentOperatorValue == '-') {
             this.currentComputationValue = ''
             this.updateValue((parseFloat(this.previousComputationValue) - parseFloat(currentComputationValuePlaceholder)).toString())
             this.updateDisplay()
+            this.clearPrevDisplay()
         } else if (this.currentOperatorValue == '*') {
             this.currentComputationValue = ''
             this.updateValue((parseFloat(this.previousComputationValue) * parseFloat(currentComputationValuePlaceholder)).toString())
             this.updateDisplay()
+            this.clearPrevDisplay()
         } else if (this.currentOperatorValue == '/') {
-            this.currentComputationValue = ''
-            this.updateValue((parseFloat(this.previousComputationValue) / parseFloat(currentComputationValuePlaceholder)).toString())
-            this.updateDisplay()
+            if (currentComputationValuePlaceholder === '0') {
+                this.updateDisplay()
+                this.clearPrevDisplay()
+            } else {
+                this.currentComputationValue = ''
+                this.updateValue((parseFloat(this.previousComputationValue) / parseFloat(currentComputationValuePlaceholder)).toString())
+                this.updateDisplay()
+                this.clearPrevDisplay()
+            }
         }
+    }
+
+    clearPrevDisplay() {
+        this.previousDisplay.style.visibility = 'hidden'
+    }
+
+    showPrevDisplay() {
+        this.previousDisplay.style.visibility = 'visible'
     }
 }
 
@@ -80,6 +101,7 @@ numberButtons.forEach(button => {
 // Add event listener for NEGATIVE BUTTON
 negativeButton.addEventListener('click', () => {
     if (currentDisplay.textContent.includes('-')) return
+    if (calc.currentComputationValue) return
     calc.updateValue(negativeText.textContent)
     calc.updateDisplay()
 })
@@ -100,6 +122,7 @@ clearButton.addEventListener('click', () => {
 operatorButtons.forEach(button => {
     button.addEventListener('click', () => {
         calc.updatePreviousDisplay(button.textContent)
+        calc.showPrevDisplay()
     })
 })
 
@@ -108,3 +131,4 @@ equalButton.addEventListener('click', () => {
     calc.calculate()
 })
 
+// fix appending a number on number button click after calculation 
